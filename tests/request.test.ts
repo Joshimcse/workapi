@@ -1,4 +1,3 @@
-// tests/WorkApiRequest.test.ts
 import WorkApiRequest from '../src/request';
 
 describe('WorkApiRequest', () => {
@@ -6,13 +5,11 @@ describe('WorkApiRequest', () => {
   let workApiRequest: WorkApiRequest;
 
   beforeEach(() => {
-    // Create a mock Request object with GET method and no body
     mockRequest = new Request('https://example.com/api', {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
 
-    // Instantiate WorkApiRequest with the mock Request
     workApiRequest = new WorkApiRequest(mockRequest);
   });
 
@@ -27,6 +24,6 @@ describe('WorkApiRequest', () => {
     expect(workApiRequest.headers.get('Content-Type')).toBe(
       mockRequest.headers.get('Content-Type'),
     );
-    expect(workApiRequest.body).toBe(null); // Body should be null for GET
+    expect(workApiRequest.body).toBe(null);
   });
 });

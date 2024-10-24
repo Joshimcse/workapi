@@ -1,4 +1,3 @@
-// WorkApiResponse.test.ts
 import WorkApiResponse from '../src/response';
 
 describe('WorkApiResponse', () => {
