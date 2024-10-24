@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc -w",
-    "format": "prettier --write \"src/**/*.ts\""
+    "test": "jest --verbose",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\""
   },
   "files": [
     "dist/**/*"
@@ -16,7 +17,9 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/jest": "^29.5.14",
     "prettier": "^3.3.3",
+    "ts-jest": "^29.2.5",
     "typescript": "^5.6.3"
   }
 }
