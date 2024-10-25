@@ -1,6 +1,6 @@
 import { CONTENT_TYPE } from './constants';
 
-export default class WorkApiResponse {
+export default class WFResponse {
   private _finished = false;
   private _statusCode = 200;
   private _body: BodyInit | null = null;

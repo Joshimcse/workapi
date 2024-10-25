@@ -1,10 +1,10 @@
-import WorkApiResponse from '../src/response';
+import WFResponse from '../src/response';
 
-describe('WorkApiResponse', () => {
-  let response: WorkApiResponse;
+describe('WFResponse', () => {
+  let response: WFResponse;
 
   beforeEach(() => {
-    response = new WorkApiResponse();
+    response = new WFResponse();
   });
 
   test('should initialize with default values', () => {

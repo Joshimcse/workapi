@@ -1,15 +1,15 @@
 /// <reference lib="webworker" />
 
 import { Route } from './types';
-import WorkApiRequest from './request';
+import WFRequest from './request';
+import WFResponse from './response';
 import { isFetchEvent } from './utils';
-import WorkApiResponse from './response';
 import { getRoute, httpMethods } from './routes';
 import { findInCache, storeInCache } from './cache';
 
-const handler = async (event: FetchEvent): Promise<Response> => {
-  const req = new WorkApiRequest(event.request);
-  const res = new WorkApiResponse();
+const run = async (request: Request): Promise<Response> => {
+  const req = new WFRequest(request);
+  const res = new WFResponse();
   const route = getRoute(req);
 
   if (!route) return new Response(`Cannot ${req.method} ${req.url}`, { status: 404 });
@@ -24,11 +24,7 @@ const handler = async (event: FetchEvent): Promise<Response> => {
     : new Response(`Cannot ${req.method} ${req.url}`, { status: 404 });
 };
 
-const executeMiddlewares = async (
-  req: WorkApiRequest,
-  res: WorkApiResponse,
-  route: Route,
-): Promise<void> => {
+const executeMiddlewares = async (req: WFRequest, res: WFResponse, route: Route): Promise<void> => {
   const { middlewares = [], handler } = route;
 
   const runMiddleware = async (index: number): Promise<void> => {
@@ -48,7 +44,7 @@ const reply = (event: Event): void => {
 
   event.respondWith(
     findInCache(event).then(
-      cached => cached || handler(event).then(res => storeInCache(event, res)),
+      cached => cached || run(event.request).then(res => storeInCache(event, res)),
     ),
   );
 };
@@ -57,9 +53,9 @@ const listen = (): void => {
   addEventListener('fetch', reply);
 };
 
-const workapi = () => ({
+const workfly = () => ({
   listen,
   ...httpMethods,
 });
 
-export default workapi;
+export default workfly;

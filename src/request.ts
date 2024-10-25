@@ -1,4 +1,4 @@
-export default class WorkApiRequest extends Request {
+export default class WFRequest extends Request {
   constructor(request: Request) {
     super(request);
   }

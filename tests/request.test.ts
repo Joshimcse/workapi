@@ -1,8 +1,8 @@
-import WorkApiRequest from '../src/request';
+import WFRequest from '../src/request';
 
-describe('WorkApiRequest', () => {
+describe('WFRequest', () => {
   let mockRequest: Request;
-  let workApiRequest: WorkApiRequest;
+  let wfRequest: WFRequest;
 
   beforeEach(() => {
     mockRequest = new Request('https://example.com/api', {
@@ -10,20 +10,18 @@ describe('WorkApiRequest', () => {
       headers: { 'Content-Type': 'application/json' },
     });
 
-    workApiRequest = new WorkApiRequest(mockRequest);
+    wfRequest = new WFRequest(mockRequest);
   });
 
-  test('should create a WorkApiRequest instance', () => {
-    expect(workApiRequest).toBeInstanceOf(WorkApiRequest);
-    expect(workApiRequest).toBeInstanceOf(Request);
+  test('should create a WFRequest instance', () => {
+    expect(wfRequest).toBeInstanceOf(WFRequest);
+    expect(wfRequest).toBeInstanceOf(Request);
   });
 
   test('should have the same properties as the original request', () => {
-    expect(workApiRequest.url).toBe(mockRequest.url);
-    expect(workApiRequest.method).toBe(mockRequest.method);
-    expect(workApiRequest.headers.get('Content-Type')).toBe(
-      mockRequest.headers.get('Content-Type'),
-    );
-    expect(workApiRequest.body).toBe(null);
+    expect(wfRequest.url).toBe(mockRequest.url);
+    expect(wfRequest.method).toBe(mockRequest.method);
+    expect(wfRequest.headers.get('Content-Type')).toBe(mockRequest.headers.get('Content-Type'));
+    expect(wfRequest.body).toBe(null);
   });
 });

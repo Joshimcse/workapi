@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 
-import WorkApiRequest from '../src/request';
+import WFRequest from '../src/request';
 import { generateRouteRegex } from '../src/utils';
 import { addRoute, getRoute, httpMethods, routes } from '../src/routes';
 
@@ -56,8 +56,8 @@ describe('Routing System', () => {
       const req = new Request('http://localhost/users/123', {
         method: 'GET',
       });
-      const workApiReq = new WorkApiRequest(req);
-      const route = getRoute(workApiReq);
+      const wfRequest = new WFRequest(req);
+      const route = getRoute(wfRequest);
 
       expect(route).toBeDefined();
       expect(route).toEqual({
@@ -75,8 +75,8 @@ describe('Routing System', () => {
       const req = new Request('http://localhost/nonexistent', {
         method: 'GET',
       });
-      const workApiReq = new WorkApiRequest(req);
-      const route = getRoute(workApiReq);
+      const wfRequest = new WFRequest(req);
+      const route = getRoute(wfRequest);
 
       expect(route).toBeUndefined();
     });

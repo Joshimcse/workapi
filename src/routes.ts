@@ -1,4 +1,4 @@
-import WorkApiRequest from './request';
+import WFRequest from './request';
 import { HttpMethod, Route } from './types';
 import { generateRouteRegex } from './utils';
 
@@ -10,7 +10,7 @@ export const addRoute = (method: HttpMethod, path: string, middlewares: Array<Fu
   routes.push({ method, path: { regex, keys }, middlewares, handler });
 };
 
-export const getRoute = (req: WorkApiRequest): Route | undefined => {
+export const getRoute = (req: WFRequest): Route | undefined => {
   const path = new URL(req.url).pathname;
   return routes.find(route => route.method === req.method && route.path.regex.test(path));
 };
