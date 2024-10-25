@@ -1,4 +1,4 @@
-import WFRequest from '../src/request';
+import WFRequest from '../src/internal/request';
 
 describe('WFRequest', () => {
   let mockRequest: Request;

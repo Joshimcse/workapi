@@ -1,4 +1,4 @@
-import WFResponse from '../src/response';
+import WFResponse from '../src/internal/response';
 
 describe('WFResponse', () => {
   let response: WFResponse;

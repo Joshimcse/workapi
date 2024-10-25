@@ -1,24 +1,28 @@
 {
   "name": "workfly",
   "version": "0.0.2",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.js",
+  "types": "types/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc -w",
+    "dev": "rollup -c -w",
+    "build": "rollup -c",
     "test": "jest --verbose",
     "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\""
   },
   "files": [
-    "dist/**/*"
+    "index.js",
+    "types"
   ],
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
     "@types/jest": "^29.5.14",
     "prettier": "^3.3.3",
+    "rollup": "^4.24.0",
+    "rollup-plugin-typescript2": "^0.36.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"

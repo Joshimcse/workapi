@@ -1,10 +1,8 @@
-/// <reference lib="webworker" />
+import WFRequest from '../src/internal/request';
+import { generateRouteRegex } from '../src/internal/utils';
+import { addRoute, getRoute, httpMethods, routes } from '../src/workfly';
 
-import WFRequest from '../src/request';
-import { generateRouteRegex } from '../src/utils';
-import { addRoute, getRoute, httpMethods, routes } from '../src/routes';
-
-jest.mock('../src/utils', () => ({
+jest.mock('../src/internal/utils', () => ({
   generateRouteRegex: jest.fn(),
 }));
 

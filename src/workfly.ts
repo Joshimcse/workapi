@@ -1,11 +1,28 @@
-/// <reference lib="webworker" />
+import WFRequest from './internal/request';
+import WFResponse from './internal/response';
+import { isFetchEvent } from './internal/utils';
+import { HttpMethod, Route } from './internal/types';
+import { generateRouteRegex } from './internal/utils';
+import { findInCache, storeInCache } from './internal/cache';
 
-import { Route } from './types';
-import WFRequest from './request';
-import WFResponse from './response';
-import { isFetchEvent } from './utils';
-import { getRoute, httpMethods } from './routes';
-import { findInCache, storeInCache } from './cache';
+export const routes: Array<Route> = [];
+
+export const addRoute = (method: HttpMethod, path: string, middlewares: Array<Function>) => {
+  const handler = middlewares.pop() as Function;
+  const { regex, keys } = generateRouteRegex(path);
+  routes.push({ method, path: { regex, keys }, middlewares, handler });
+};
+
+export const getRoute = (req: WFRequest): Route | undefined => {
+  const path = new URL(req.url).pathname;
+  return routes.find(route => route.method === req.method && route.path.regex.test(path));
+};
+
+export const httpMethods = {
+  get: (path: string, ...middlewares: Array<Function>): void => addRoute('GET', path, middlewares),
+  post: (path: string, ...middlewares: Array<Function>): void =>
+    addRoute('POST', path, middlewares),
+};
 
 const run = async (request: Request): Promise<Response> => {
   const req = new WFRequest(request);

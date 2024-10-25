@@ -1,5 +1,3 @@
-/// <reference lib="webworker" />
-
 import {
   isGET,
   isPUT,
@@ -10,7 +8,7 @@ import {
   isOPTIONS,
   isFetchEvent,
   generateRouteRegex,
-} from '../src/utils';
+} from '../src/internal/utils';
 
 describe('HTTP Method checks', () => {
   const mockRequest = (method: string): Request =>
