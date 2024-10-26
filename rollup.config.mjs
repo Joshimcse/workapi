@@ -2,12 +2,18 @@ import terser from '@rollup/plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 
 export default {
-  input: 'src/workfly.ts',
-  output: {
-    file: 'workfly.js',
-    format: 'esm',
-    sourcemap: false,
+  input: {
+    workfly: 'src/workfly.ts',
+    router: 'src/router.ts',
   },
+  output: [
+    {
+      dir: './',
+      format: 'esm',
+      sourcemap: false,
+      entryFileNames: '[name].js',
+    },
+  ],
   plugins: [
     typescript({
       tsconfig: './tsconfig.json',
@@ -15,11 +21,11 @@ export default {
       useTsconfigDeclarationDir: true,
     }),
     terser({
-      compress: false,
-      mangle: false,
+      compress: true,
+      mangle: true,
       output: {
         comments: false,
-        beautify: true,
+        beautify: false,
       },
     }),
   ],

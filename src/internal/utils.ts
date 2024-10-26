@@ -1,4 +1,4 @@
-import { HttpMethod, RouteRegexResult } from './types';
+import { HttpMethod, Router, RouteRegexResult } from './types';
 
 /**
  * Checks if the request method matches the specified HTTP method.
@@ -114,4 +114,32 @@ export const generateRouteRegex = (input: string | RegExp): RouteRegexResult => 
     keys,
     regex: new RegExp('^' + pattern + '\\/?$', 'i'),
   };
+};
+
+const isRouter = (obj: any): obj is Router => {
+  return (
+    obj &&
+    Array.isArray(obj._routes) &&
+    Array.isArray(obj._middlewares) &&
+    typeof obj.use === 'function' &&
+    typeof obj.get === 'function' &&
+    typeof obj.post === 'function'
+  );
+};
+
+export const isUseMiddleware = (args: Array<any>): args is [Function] => {
+  return args.length === 1 && typeof args[0] === 'function';
+};
+
+export const isUseRouter = (args: Array<any>): args is [string, Router] => {
+  return args.length === 2 && typeof args[0] === 'string' && isRouter(args[1]);
+};
+
+export const isUseRouterWithMiddleware = (args: Array<any>): args is [string, Function, Router] => {
+  return (
+    args.length === 3 &&
+    typeof args[0] === 'string' &&
+    typeof args[1] === 'function' &&
+    isRouter(args[2])
+  );
 };

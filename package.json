@@ -1,7 +1,7 @@
 {
   "name": "workfly",
   "version": "0.0.2",
-  "main": "index.js",
+  "main": "workfly.js",
   "types": "types/index.d.ts",
   "scripts": {
     "dev": "rollup -c -w",
@@ -13,6 +13,14 @@
     "index.js",
     "types"
   ],
+  "exports": {
+    ".": {
+      "import": "./workfly.js"
+    },
+    "./Router": {
+      "import": "./router.js"
+    }
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

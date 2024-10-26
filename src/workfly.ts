@@ -1,24 +1,30 @@
+import {
+  isUseRouter,
+  isFetchEvent,
+  isUseMiddleware,
+  isUseRouterWithMiddleware,
+} from './internal/utils';
 import WFRequest from './internal/request';
 import WFResponse from './internal/response';
-import { isFetchEvent } from './internal/utils';
-import { HttpMethod, Route } from './internal/types';
 import { generateRouteRegex } from './internal/utils';
+import { HttpMethod, Route, Router } from './internal/types';
 import { findInCache, storeInCache } from './internal/cache';
 
-export const routes: Array<Route> = [];
+const routes: Array<Route> = [];
+const middlewares: Array<Function> = [];
 
-export const addRoute = (method: HttpMethod, path: string, middlewares: Array<Function>) => {
+const addRoute = (method: HttpMethod, path: string, middlewares: Array<Function>) => {
   const handler = middlewares.pop() as Function;
   const { regex, keys } = generateRouteRegex(path);
   routes.push({ method, path: { regex, keys }, middlewares, handler });
 };
 
-export const getRoute = (req: WFRequest): Route | undefined => {
+const getRoute = (req: WFRequest): Route | undefined => {
   const path = new URL(req.url).pathname;
   return routes.find(route => route.method === req.method && route.path.regex.test(path));
 };
 
-export const httpMethods = {
+const httpMethods = {
   get: (path: string, ...middlewares: Array<Function>): void => addRoute('GET', path, middlewares),
   post: (path: string, ...middlewares: Array<Function>): void =>
     addRoute('POST', path, middlewares),
@@ -66,12 +72,40 @@ const reply = (event: Event): void => {
   );
 };
 
+const use = (...args: Array<any>) => {
+  if (isUseMiddleware(args)) {
+    const [middleware] = args;
+    middlewares.push(middleware);
+  } else if (isUseRouter(args)) {
+    const [path, router] = args;
+    const routerRoutes = router._routes;
+    const routerMiddlewares = router._middlewares;
+
+    routerRoutes.forEach(route => {
+      const { path: routePath, method, middlewares } = route;
+      const fullPath = `${path}${routePath}`;
+      addRoute(method, fullPath, [...routerMiddlewares, ...middlewares]);
+    });
+  } else if (isUseRouterWithMiddleware(args)) {
+    const [path, middleware, router] = args;
+    const routerRoutes = router._routes;
+    const routerMiddlewares = router._middlewares;
+
+    routerRoutes.forEach(route => {
+      const { path: routePath, method, middlewares } = route;
+      const fullPath = `${path}${routePath}`;
+      addRoute(method, fullPath, [middleware, ...routerMiddlewares, ...middlewares]);
+    });
+  }
+};
+
 const listen = (): void => {
   addEventListener('fetch', reply);
 };
 
 const workfly = () => ({
   listen,
+  use,
   ...httpMethods,
 });
 
