@@ -17,8 +17,8 @@ export type RouterRoute = {
 };
 
 export type Router = {
-  _routes: Array<RouterRoute>;
-  _middlewares: Array<Function>;
+  routes: Array<RouterRoute>;
+  middlewares: Array<Function>;
   use: (middleware: Function) => void;
   get: (path: string, ...middlewares: Array<Function>) => void;
   post: (path: string, ...middlewares: Array<Function>) => void;

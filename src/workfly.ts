@@ -1,14 +1,9 @@
-import {
-  isUseRouter,
-  isFetchEvent,
-  isUseMiddleware,
-  isUseRouterWithMiddleware,
-} from './internal/utils';
 import WFRequest from './internal/request';
 import WFResponse from './internal/response';
 import { generateRouteRegex } from './internal/utils';
-import { HttpMethod, Route, Router } from './internal/types';
+import { HttpMethod, Route } from './internal/types';
 import { findInCache, storeInCache } from './internal/cache';
+import { isUseRouter, isFetchEvent, isUseMiddleware, isUseRouterWithMiddleware } from './internal/utils';
 
 const routes: Array<Route> = [];
 const middlewares: Array<Function> = [];
@@ -26,8 +21,7 @@ const getRoute = (req: WFRequest): Route | undefined => {
 
 const httpMethods = {
   get: (path: string, ...middlewares: Array<Function>): void => addRoute('GET', path, middlewares),
-  post: (path: string, ...middlewares: Array<Function>): void =>
-    addRoute('POST', path, middlewares),
+  post: (path: string, ...middlewares: Array<Function>): void => addRoute('POST', path, middlewares),
 };
 
 const run = async (request: Request): Promise<Response> => {
@@ -66,9 +60,7 @@ const reply = (event: Event): void => {
   if (!isFetchEvent(event)) return;
 
   event.respondWith(
-    findInCache(event).then(
-      cached => cached || run(event.request).then(res => storeInCache(event, res)),
-    ),
+    findInCache(event).then(cached => cached || run(event.request).then(res => storeInCache(event, res))),
   );
 };
 
@@ -78,8 +70,8 @@ const use = (...args: Array<any>) => {
     middlewares.push(middleware);
   } else if (isUseRouter(args)) {
     const [path, router] = args;
-    const routerRoutes = router._routes;
-    const routerMiddlewares = router._middlewares;
+    const routerRoutes = router.routes;
+    const routerMiddlewares = router.middlewares;
 
     routerRoutes.forEach(route => {
       const { path: routePath, method, middlewares } = route;
@@ -88,8 +80,8 @@ const use = (...args: Array<any>) => {
     });
   } else if (isUseRouterWithMiddleware(args)) {
     const [path, middleware, router] = args;
-    const routerRoutes = router._routes;
-    const routerMiddlewares = router._middlewares;
+    const routerRoutes = router.routes;
+    const routerMiddlewares = router.middlewares;
 
     routerRoutes.forEach(route => {
       const { path: routePath, method, middlewares } = route;

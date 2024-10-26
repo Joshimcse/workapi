@@ -116,30 +116,15 @@ export const generateRouteRegex = (input: string | RegExp): RouteRegexResult => 
   };
 };
 
-const isRouter = (obj: any): obj is Router => {
-  return (
-    obj &&
-    Array.isArray(obj._routes) &&
-    Array.isArray(obj._middlewares) &&
-    typeof obj.use === 'function' &&
-    typeof obj.get === 'function' &&
-    typeof obj.post === 'function'
-  );
-};
+const isRouter = (obj: any): obj is Router =>
+  obj &&
+  ['routes', 'middlewares'].every(prop => Array.isArray(obj[prop])) &&
+  ['use', 'get', 'post'].every(method => typeof obj[method] === 'function');
 
-export const isUseMiddleware = (args: Array<any>): args is [Function] => {
-  return args.length === 1 && typeof args[0] === 'function';
-};
+export const isUseMiddleware = (args: any[]): args is [Function] => args.length === 1 && typeof args[0] === 'function';
 
-export const isUseRouter = (args: Array<any>): args is [string, Router] => {
-  return args.length === 2 && typeof args[0] === 'string' && isRouter(args[1]);
-};
+export const isUseRouter = (args: any[]): args is [string, Router] =>
+  args.length === 2 && typeof args[0] === 'string' && isRouter(args[1]);
 
-export const isUseRouterWithMiddleware = (args: Array<any>): args is [string, Function, Router] => {
-  return (
-    args.length === 3 &&
-    typeof args[0] === 'string' &&
-    typeof args[1] === 'function' &&
-    isRouter(args[2])
-  );
-};
+export const isUseRouterWithMiddleware = (args: any[]): args is [string, Function, Router] =>
+  args.length === 3 && typeof args[0] === 'string' && typeof args[1] === 'function' && isRouter(args[2]);

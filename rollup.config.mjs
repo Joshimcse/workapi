@@ -21,11 +21,11 @@ export default {
       useTsconfigDeclarationDir: true,
     }),
     terser({
-      compress: true,
+      compress: false,
       mangle: true,
       output: {
         comments: false,
-        beautify: false,
+        beautify: true,
       },
     }),
   ],
