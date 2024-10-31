@@ -1,6 +1,6 @@
 {
   "name": "workfly",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "main": "workfly.js",
   "types": "types/index.d.ts",
   "scripts": {
@@ -19,6 +19,9 @@
     },
     "./Router": {
       "import": "./router.js"
+    },
+    "./Middlewares": {
+      "import": "./middlewares.js"
     }
   },
   "keywords": [],

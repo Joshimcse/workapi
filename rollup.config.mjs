@@ -3,8 +3,9 @@ import typescript from 'rollup-plugin-typescript2';
 
 export default {
   input: {
-    workfly: 'src/workfly.ts',
     router: 'src/router.ts',
+    workfly: 'src/workfly.ts',
+    middlewares: 'src/middlewares.ts',
   },
   output: [
     {

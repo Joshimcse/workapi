@@ -4,10 +4,10 @@ const Cache: Cache = (caches as any).default;
 
 export const findInCache = async (event: FetchEvent) => {
   let req = event.request;
-  if (isHEAD(req)) req = new Request(req, { method: 'GET' });
+  if (isHEAD(req.method)) req = new Request(req, { method: 'GET' });
 
   let res = await Cache.match(req);
-  if (isHEAD(req) && res) res = new Response(null, res);
+  if (isHEAD(req.method) && res) res = new Response(null, res);
   return res;
 };
 
@@ -26,7 +26,7 @@ export const canBeCached = (res: Response): boolean => {
 export const storeInCache = (event: FetchEvent, res: Response) => {
   const req = event.request;
 
-  if ((isGET(req) || typeof req === 'string') && canBeCached(res)) {
+  if ((isGET(req.method) || typeof req === 'string') && canBeCached(res)) {
     if (res.headers.has('Set-Cookie')) {
       res = new Response(res.body, res);
       res.headers.append('Cache-Control', 'private=Set-Cookie');

@@ -1,84 +1,16 @@
+import WFRequest from './request';
 import { HttpMethod, Router, RouteRegexResult } from './types';
 
-/**
- * Checks if the request method matches the specified HTTP method.
- *
- * @param req - The Request object to check.
- * @param method - The HTTP method to compare against.
- * @returns True if the request method matches, false otherwise.
- */
-const isMethod = (req: Request, method: HttpMethod): boolean => req.method === method;
+export const isGET = (method: string): boolean => method === 'GET';
+export const isPUT = (method: string): boolean => method === 'PUT';
+export const isHEAD = (method: string): boolean => method === 'HEAD';
+export const isPOST = (method: string): boolean => method === 'POST';
+export const isPATCH = (method: string): boolean => method === 'PATCH';
+export const isDELETE = (method: string): boolean => method === 'DELETE';
+export const isOPTIONS = (method: string): boolean => method === 'OPTIONS';
 
-/**
- * Checks if the request method is GET.
- *
- * @param req - The Request object to check.
- * @returns True if the request method is GET, false otherwise.
- */
-export const isGET = (req: Request): boolean => isMethod(req, 'GET');
-
-/**
- * Checks if the request method is PUT.
- *
- * @param req - The Request object to check.
- * @returns True if the request method is PUT, false otherwise.
- */
-export const isPUT = (req: Request): boolean => isMethod(req, 'PUT');
-
-/**
- * Checks if the request method is HEAD.
- *
- * @param req - The Request object to check.
- * @returns True if the request method is HEAD, false otherwise.
- */
-export const isHEAD = (req: Request): boolean => isMethod(req, 'HEAD');
-
-/**
- * Checks if the request method is POST.
- *
- * @param req - The Request object to check.
- * @returns True if the request method is POST, false otherwise.
- */
-export const isPOST = (req: Request): boolean => isMethod(req, 'POST');
-
-/**
- * Checks if the request method is DELETE.
- *
- * @param req - The Request object to check.
- * @returns True if the request method is DELETE, false otherwise.
- */
-export const isDELETE = (req: Request): boolean => isMethod(req, 'DELETE');
-
-/**
- * Checks if the request method is PATCH.
- *
- * @param req - The Request object to check.
- * @returns True if the request method is PATCH, false otherwise.
- */
-export const isPATCH = (req: Request): boolean => isMethod(req, 'PATCH');
-
-/**
- * Checks if the request method is OPTIONS.
- *
- * @param req - The Request object to check.
- * @returns True if the request method is OPTIONS, false otherwise.
- */
-export const isOPTIONS = (req: Request): boolean => isMethod(req, 'OPTIONS');
-
-/**
- * Determines if the given event is a FetchEvent.
- *
- * @param event - The Event object to check.
- * @returns True if the event is a FetchEvent, false otherwise.
- */
 export const isFetchEvent = (event: Event): event is FetchEvent => 'request' in event;
 
-/**
- * Generates a regex pattern and keys for a given route string or RegExp.
- *
- * @param input - The route string or regular expression.
- * @returns An object containing the regex pattern and keys extracted from the input.
- */
 export const generateRouteRegex = (input: string | RegExp): RouteRegexResult => {
   if (input instanceof RegExp) {
     return { keys: [], regex: input };

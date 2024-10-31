@@ -3,6 +3,8 @@ import { CONTENT_TYPE } from './constants';
 export default class WFResponse {
   private _finished = false;
   private _statusCode = 200;
+  private _start: number = Date.now();
+  public isExecTimeLog: boolean = false;
   private _body: BodyInit | null = null;
   private _headers: Record<string, string> = {};
 
@@ -17,6 +19,9 @@ export default class WFResponse {
   }
   get statusCode() {
     return this._statusCode;
+  }
+  get elapsedTime(): number {
+    return Date.now() - this._start;
   }
 
   private set body(data: BodyInit | null) {

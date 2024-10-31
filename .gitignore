@@ -4,6 +4,8 @@ dist/
 node_modules/
 
 # build files
-workfly.js
-router.js
 types/
+router.js
+utils*.js
+workfly.js
+middlewares.js
